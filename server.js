@@ -35,7 +35,7 @@ async function readEmails() {
     try {
         const connection = await imaps.connect({ imap: config.imap });
         await connection.openBox('INBOX');
-        console.log("Reading unseen emails...");
+        // console.log("Reading unseen emails...");
 
         const searchCriteria = ['UNSEEN'];
         const fetchOptions = {
@@ -45,7 +45,7 @@ async function readEmails() {
 
         const messages = await connection.search(searchCriteria, fetchOptions);
 
-        console.log(`Found ${messages.length} unseen emails`);
+        // console.log(`Found ${messages.length} unseen emails`);
 
         for (let message of messages) {
             const parts = _.find(message.parts, { which: 'TEXT' });
@@ -78,7 +78,7 @@ async function readEmails() {
 
 function extractCandleData(body) {
     try {
-        console.log("Email body content:", body);
+        // console.log("Email body content:", body);
 
         const jsonRegex = /{&#34;time&#34;:.*?&#34;volume&#34;:\d+}/s;
 
@@ -88,7 +88,7 @@ function extractCandleData(body) {
         if (jsonMatch && jsonMatch[0]) {
             let jsonString = jsonMatch[0];
             jsonString = he.decode(jsonString);
-            console.log("Decoded JSON string before cleanup:", jsonString);
+            // console.log("Decoded JSON string before cleanup:", jsonString);
 
             jsonString = jsonString
                 .replace(/=|;/g, '') 
@@ -97,7 +97,7 @@ function extractCandleData(body) {
                 .replace(/(\d)\s+(\d)/g, '$1$2') 
                 .replace(/(\d+)\s*\.\s*(\d+)/g, '$1.$2'); 
 
-            console.log("Cleaned JSON string:", jsonString);
+            // console.log("Cleaned JSON string:", jsonString);
 
             const candleData = JSON.parse(jsonString);
 
